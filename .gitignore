@@ -1,0 +1,23 @@
+# Data files
+data/
+*.csv
+*.zip
+*.parquet
+
+# Environment
+.env
+*.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# GCP credentials
+*credentials*.json
+*service-account*.json
