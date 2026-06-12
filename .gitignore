@@ -20,4 +20,12 @@ venv/
 
 # GCP credentials
 *credentials*.json
-*service-account*.json
+*service-account*.jsongcp-key.json
+
+# Airflow local runtime
+airflow/logs/
+airflow/*.db
+airflow/*.cfg
+airflow/*.json
+airflow/*.generated
+airflow/simple_auth_manager_passwords.json.generated
