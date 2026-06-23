@@ -29,3 +29,4 @@ airflow/*.cfg
 airflow/*.json
 airflow/*.generated
 airflow/simple_auth_manager_passwords.json.generated
+.DS_Store
