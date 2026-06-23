@@ -8,13 +8,7 @@ This is the cloud-data-engineering counterpart to my [fraud-analytics-agent](htt
 
 ## Architecture
 
-```
-┌──────────────┐     ┌──────────────────┐     ┌─────────────────────┐     ┌────────────────┐
-│  Local CSVs  │ ──► │  Cloud Storage   │ ──► │     BigQuery        │ ──► │   Validation   │
-│  (5 tables)  │     │  (data lake/raw) │     │  raw + optimized    │     │  (fraud rate)  │
-└──────────────┘     └──────────────────┘     └─────────────────────┘     └────────────────┘
-        └────────────────────── orchestrated by Apache Airflow ──────────────────────┘
-```
+![Pipeline architecture](./docs/architecture.png)
 
 The Airflow DAG runs four stages:
 
@@ -39,6 +33,15 @@ The optimized table is **partitioned by `DATE(date)`** and **clustered by `mcc, 
 | Optimized `transactions_optimized` | ~27 MB |
 
 That's roughly a **90% reduction (10x less data scanned)** for identical results. Since BigQuery bills on bytes scanned, this is a direct, compounding cost saving on every query — the kind of optimization that matters at healthcare-data scale.
+
+## Cost note
+
+This pipeline runs comfortably within **GCP's free tier** at portfolio scale:
+
+- **Cloud Storage** — a handful of CSVs costs pennies per month at rest; covered by the free tier.
+- **BigQuery storage** — the tables sit well within the 10 GB/month free storage allowance.
+- **BigQuery queries** — billed per byte scanned, with 1 TB/month free. The partition + cluster layout means each analytical query scans tens of MB, not hundreds — so the free tier goes a long way.
+- **Nothing costs money at rest.** You're only ever billed on query bytes, which the optimized layout minimizes by design.
 
 ---
 
